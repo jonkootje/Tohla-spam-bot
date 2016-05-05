@@ -15,9 +15,9 @@ This is a chrome extension, this is how to use it.
 == Import it to chrome ==
 
 1. Open google chrome
-2. Go to settings (Right top button > Settings)
-3. Go to extensions (Left top > Extensions)
-4. Now drag the "Chrome Plugin" folder over the page and release so it gets installed.
+2. Open developer console ("F12" > Click "console" on the top navigation bar)
+3. Copy and past the source code from content.js in to the console and press enter.
+4. Now you are ready to go :D
 
 Now you have the extension installed in your browser.
 
