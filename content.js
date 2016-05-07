@@ -1,7 +1,13 @@
 var adMessage = prompt('Spam message', 'Please visit www.social.web-sj.com');
 var disconnectInterval = prompt('Time waiting until automatic disconnect', 'Use 0 or less to not disconnect automatically at all');
 var btn = document.getElementById('buttondiv');
-var s = -1;
+var s = -1; //used to calculate intervals
+// Used to indicate the current state
+	// 1   =  Disconnect (start)
+	// 1.5 =  Connect
+	// 2   =  Send spam message
+	// 3   =  Reconnect to a new stranger (after interval)
+	// 4   =  Sit idle until stranger disconnects
 var step = 1;
 
 
@@ -9,19 +15,12 @@ function curTime() {
     return new Date().getTime();
 }
 
-// Tohla defines following functions:
-// connect = Connect();
-// disconnect = Disconnect();
-// send = SendMessage();
+// Tohla page itself defines the following functions:
+// Connect();
+// Disconnect();
+// SendMessage();
 
 function loop() {
-    // Steps:
-	// 1   =  Disconnect (start)
-	// 1.5 =  Connect
-	// 2   =  Send spam message
-	// 3   =  Reconnect to a new stranger (after interval)
-	// 4   =  Sit idle until stranger disconnects
-	
     if (step == 1) {
         Disconnect();
         step = 1.5;
