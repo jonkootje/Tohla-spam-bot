@@ -1,30 +1,26 @@
-var input = document.getElementById('textdiv');
-var adMessage = 'Please visit www.social.web-sj.com';
-var adMessage = prompt('Spam message', adMessage)
+var adMessage = prompt('Spam message', 'Please visit www.social.web-sj.com');
+var disconnectInterval = prompt('Time waiting until automatic disconnect', 'Use 0 or less to not disconnect automatically at all');
 var btn = document.getElementById('buttondiv');
-var interval = 50;
+var s = -1; //used to calculate intervals
+// Used to indicate the current state
+	// 1   =  Disconnect (start)
+	// 1.5 =  Connect
+	// 2   =  Send spam message
+	// 3   =  Reconnect to a new stranger (after interval)
+	// 4   =  Sit idle until stranger disconnects
+var step = 1;
 
 
 function curTime() {
     return new Date().getTime();
 }
 
-function send(msg) {
-    input.value = msg;
-    SendMessage();
-    
-    return true;
-}
-// connect = Connect();
-// disconnect = Disconnect();
-// send = SendMessage();
-
-var s = true;
-var step = 1;
-
+// Tohla page itself defines the following functions:
+// Connect();
+// Disconnect();
+// SendMessage();
 
 function loop() {
-    
     if (step == 1) {
         Disconnect();
         step = 1.5;
@@ -38,23 +34,25 @@ function loop() {
     }
     
     if (step == 2 && btn.value == 'Disconnect') {
-        send(adMessage);
+        document.getElementById('textdiv').value = adMessage;
+		SendMessage();
+		
         console.log('[BOT] Sending message');
         
-        step = 3;
+        if (disconnectInterval > 0) {
+			step = 3;
+		} else {
+			step = 4;
+		}
         s = curTime();
-        
     } else if (btn.value != 'Disconnect') {
-        console.log('[BOT] A waiting connection...');
+        console.log('[BOT] Awaiting connection...');
     }
     
-    
-    if (step == 3 && (curTime() - s) >= 6000) {
-        console.log('[BOT] Reconnecting...');
+    if ((step == 3 && (curTime() - s) >= disconnectInterval) || (step == 4 && btn.value == 'New')) {
+		console.log('[BOT] Reconnecting to new stranger...');
         step = 1;
     }
-    
-    return true;
 }
 
-setInterval(loop, interval);
+setInterval(loop, 50);
